@@ -12,43 +12,67 @@ class App extends React.Component {
       id: null,
       mockData: [
         {
-          id: "1",
-          title: "Buy Milk.",
-          done: false,
+          id: 1,
+          username: "Joe",
+          english: 68,
+          sst: 89,
+          science: 72,
+          math: 92,
+          avg: 80,
+          done:true,
           date: new Date()
         },
         {
-          id: "2",
-          title: "Meeting with Ali.",
-          done: false,
+          id: 2,
+          username: "Timothy",
+          english: 68,
+          sst: 90,
+          science: 62,
+          math: 92,
+          avg: 71,
+          done:true,
           date: new Date()
         },
         {
-          id: "3",
-          title: "Tea break.",
-          done: false,
+          id: 3,
+          username: "Isaac",
+          english: 58,
+          sst: 87,
+          science: 70,
+          math: 82,
+          avg: 74,
+          done:true,
           date: new Date()
         },
         {
-          id: "4",
-          title: "Go for a run.",
-          done: false,
+          id: 4,
+          username: "Kelvin",
+          english: 86,
+          sst: 59,
+          science: 77,
+          math: 68,
+          avg: 72,
+          done:true,
           date: new Date()
         }
       ]
     };
   }
 
-  onSubmitHandle(event) {
+  onSubmitHandle = (event) => {
     event.preventDefault();
 
     this.setState({
       mockData: [
         ...this.state.mockData,
         {
-          id: Date.now(),
-          title: event.target.item.value,
-          done: false,
+          id: this.state.mockData.length + 1,
+          username: event.target.username.value,
+          english: event.target.english.value,
+          sst: event.target.sst.value,
+          science: event.target.science.value,
+          math: event.target.math.value,
+          avg: event.target.avg.value,
           date: new Date()
         }
       ]
@@ -57,33 +81,44 @@ class App extends React.Component {
     event.target.item.value = "";
   }
 
-  onDeleteHandle() {
-    let id = arguments[0];
+  onDeleteHandle = (id) => {
 
     this.setState({
-      mockData: this.state.mockData.filter(item => {
+      mockData: (this.state.mockData.filter(item => {
         if (item.id !== id) {
           return item;
         }
-      })
+        return null;
+      }))
     });
   }
 
-  onEditHandle(event) {
+  onEditHandle = (item) => {
     this.setState({
       edit: true,
-      id: arguments[0],
-      title: arguments[1]
+      id: item.id,
+      username: item.username,
+      english: item.english,
+      sst: item.sst,
+      science: item.science,
+      math: item.math,
+      avg: item.avg,
+      date: item.date
     });
   }
 
-  onUpdateHandle(event) {
+  onUpdateHandle = (event) => {
     event.preventDefault();
 
     this.setState({
       mockData: this.state.mockData.map(item => {
-        if (item.id === this.state.id) {
-          item["title"] = event.target.updatedItem.value;
+        if (item.id) {
+          item["username"] = event.target.username.value;
+          item["english"] = event.target.english.value;
+          item["sst"] = event.target.sst.value;
+          item["science"] = event.target.science.value;
+          item["math"] = event.target.math.value;
+          item["avg"] = event.target.avg.value;
           return item;
         }
 
@@ -96,8 +131,7 @@ class App extends React.Component {
     });
   }
 
-  onCompleteHandle() {
-    let id = arguments[0];
+  onCompleteHandle = (id) => {
 
     this.setState({
       mockData: this.state.mockData.map(item => {
@@ -111,15 +145,51 @@ class App extends React.Component {
     });
   }
 
-  renderEditForm() {
+  renderEditForm = () => {
     if (this.state.edit) {
       return (
         <form onSubmit={this.onUpdateHandle.bind(this)}>
+          <label>username</label>
           <input
             type="text"
-            name="updatedItem"
+            name="username"
             className="item"
-            defaultValue={this.state.title}
+            defaultValue={this.state.username}
+          />
+          <label>english</label>
+          <input
+            type="text"
+            name="english"
+            className="item"
+            defaultValue={this.state.english}
+          />
+          <label>sst</label>
+          <input
+            type="text"
+            name="sst"
+            className="item"
+            defaultValue={this.state.sst}
+          />
+          <label>science</label>
+          <input
+            type="text"
+            name="science"
+            className="item"
+            defaultValue={this.state.science}
+          />
+          <label>math</label>
+          <input
+            type="text"
+            name="math"
+            className="item"
+            defaultValue={this.state.math}
+          />
+          <label>avg</label>
+          <input
+            type="text"
+            name="avg"
+            className="item"
+            defaultValue={this.state.avg}
           />
           <button className="update-add-item">Update</button>
         </form>
@@ -132,27 +202,80 @@ class App extends React.Component {
       <div>
         {this.renderEditForm()}
         <form onSubmit={this.onSubmitHandle.bind(this)}>
-          <input type="text" name="item" className="item" />
+          <label>username</label>
+          <input
+            type="text"
+            name="username"
+            className="item"
+          />
+          <label>english</label>
+          <input
+            type="text"
+            name="english"
+            className="item"
+          />
+          <label>sst</label>
+          <input
+            type="text"
+            name="sst"
+            className="item"
+          />
+          <label>science</label>
+          <input
+            type="text"
+            name="science"
+            className="item"
+          />
+          <label>math</label>
+          <input
+            type="text"
+            name="math"
+            className="item"
+          />
+          <label>avg</label>
+          <input
+            type="text"
+            name="avg"
+            className="item"
+          />
           <button className="btn-add-item">Add</button>
         </form>
-        <ul>
-          {this.state.mockData.map(item => (
-            <li key={item.id} className={item.done ? "done" : "hidden"}>
-              {item.title}
-              <button onClick={this.onDeleteHandle.bind(this, item.id)}>
-                Delete
-              </button>
-              <button
-                onClick={this.onEditHandle.bind(this, item.id, item.title)}
-              >
-                Edit
-              </button>
-              <button onClick={this.onCompleteHandle.bind(this, item.id)}>
-                Complete
-              </button>
-            </li>
+        <table>
+          <tbody>
+            <th>
+              <td>username</td>
+              <td>sst</td>
+              <td>science</td>
+              <td>english</td>
+              <td>math</td>
+              <td>avg</td>
+              <td>Actions</td>
+            </th>
+            {this.state.mockData.map(item => (
+              <tr key={item.id} className={item.done ? "done" : "hidden"}>
+                <td>{item.username}</td>
+                <td>{item.sst}</td>
+                <td>{item.science}</td>
+                <td>{item.english}</td>
+                <td>{item.math}</td>
+                <td>{item.avg}</td>
+              <td>
+                <button onClick={this.onDeleteHandle.bind(this, item.id)}>
+                  Delete
+                </button>
+                <button
+                  onClick={this.onEditHandle.bind(this, item.id, item.username, item.english, item.sst, item.science, item.math, item.avg, item.date)}
+                >
+                  Edit
+                </button>
+                <button onClick={this.onCompleteHandle.bind(this, item.id)}>
+                  Complete
+                </button>
+              </td> 
+            </tr>
           ))}
-        </ul>
+          </tbody>
+        </table>
       </div>
     );
   }
