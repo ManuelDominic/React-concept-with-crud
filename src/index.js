@@ -65,6 +65,7 @@ class App extends React.Component {
         if (item.id !== id) {
           return item;
         }
+        return null;
       })
     });
   }
