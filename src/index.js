@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import "./styles.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -19,8 +20,8 @@ class App extends React.Component {
           science: 72,
           math: 92,
           avg: 80,
-          done:true,
-          date: new Date()
+          done: true,
+          date: new Date().toString()
         },
         {
           id: 2,
@@ -30,8 +31,8 @@ class App extends React.Component {
           science: 62,
           math: 92,
           avg: 71,
-          done:true,
-          date: new Date()
+          done: true,
+          date: new Date().toString()
         },
         {
           id: 3,
@@ -41,8 +42,8 @@ class App extends React.Component {
           science: 70,
           math: 82,
           avg: 74,
-          done:true,
-          date: new Date()
+          done: true,
+          date: new Date().toString()
         },
         {
           id: 4,
@@ -52,14 +53,14 @@ class App extends React.Component {
           science: 77,
           math: 68,
           avg: 72,
-          done:true,
-          date: new Date()
+          done: true,
+          date: new Date().toString()
         }
       ]
     };
   }
 
-  onSubmitHandle = (event) => {
+  onSubmitHandle = event => {
     event.preventDefault();
 
     this.setState({
@@ -73,27 +74,26 @@ class App extends React.Component {
           science: event.target.science.value,
           math: event.target.math.value,
           avg: event.target.avg.value,
-          date: new Date()
+          date: new Date().toString()
         }
       ]
     });
 
     event.target.item.value = "";
-  }
+  };
 
-  onDeleteHandle = (id) => {
-
+  onDeleteHandle = id => {
     this.setState({
-      mockData: (this.state.mockData.filter(item => {
+      mockData: this.state.mockData.filter(item => {
         if (item.id !== id) {
           return item;
         }
         return null;
-      }))
+      })
     });
-  }
+  };
 
-  onEditHandle = (item) => {
+  onEditHandle = item => {
     this.setState({
       edit: true,
       id: item.id,
@@ -105,9 +105,9 @@ class App extends React.Component {
       avg: item.avg,
       date: item.date
     });
-  }
+  };
 
-  onUpdateHandle = (event) => {
+  onUpdateHandle = event => {
     event.preventDefault();
 
     this.setState({
@@ -121,7 +121,6 @@ class App extends React.Component {
           item["avg"] = event.target.avg.value;
           return item;
         }
-
         return item;
       })
     });
@@ -129,21 +128,19 @@ class App extends React.Component {
     this.setState({
       edit: false
     });
-  }
+  };
 
-  onCompleteHandle = (id) => {
-
+  onCompleteHandle = id => {
     this.setState({
       mockData: this.state.mockData.map(item => {
         if (item.id === id) {
           item["done"] = true;
           return item;
         }
-
         return item;
       })
     });
-  }
+  };
 
   renderEditForm = () => {
     if (this.state.edit) {
@@ -195,7 +192,7 @@ class App extends React.Component {
         </form>
       );
     }
-  }
+  };
 
   render() {
     return (
@@ -203,77 +200,76 @@ class App extends React.Component {
         {this.renderEditForm()}
         <form onSubmit={this.onSubmitHandle.bind(this)}>
           <label>username</label>
-          <input
-            type="text"
-            name="username"
-            className="item"
-          />
+          <input type="text" name="username" className="item" />
           <label>english</label>
-          <input
-            type="text"
-            name="english"
-            className="item"
-          />
+          <input type="text" name="english" className="item" />
           <label>sst</label>
-          <input
-            type="text"
-            name="sst"
-            className="item"
-          />
+          <input type="text" name="sst" className="item" />
           <label>science</label>
-          <input
-            type="text"
-            name="science"
-            className="item"
-          />
+          <input type="text" name="science" className="item" />
           <label>math</label>
-          <input
-            type="text"
-            name="math"
-            className="item"
-          />
+          <input type="text" name="math" className="item" />
           <label>avg</label>
-          <input
-            type="text"
-            name="avg"
-            className="item"
-          />
+          <input type="text" name="avg" className="item" />
           <button className="btn-add-item">Add</button>
         </form>
-        <table>
+        <br />
+        <br />
+        <br />
+        <table className="table table-striped">
+          <thead>
+            <tr>
+                <th>Id</th>
+                <th>username</th>
+                <th>sst</th>
+                <th>science</th>
+                <th>english</th>
+                <th>math</th>
+                <th>avg</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+          </thead>
           <tbody>
-            <th>
-              <td>username</td>
-              <td>sst</td>
-              <td>science</td>
-              <td>english</td>
-              <td>math</td>
-              <td>avg</td>
-              <td>Actions</td>
-            </th>
-            {this.state.mockData.map(item => (
+          {(this.state.mockData.length>0 ? ( 
+            this.state.mockData.map(item => (
               <tr key={item.id} className={item.done ? "done" : "hidden"}>
+                <td>{item.id}</td>
                 <td>{item.username}</td>
                 <td>{item.sst}</td>
                 <td>{item.science}</td>
                 <td>{item.english}</td>
                 <td>{item.math}</td>
                 <td>{item.avg}</td>
-              <td>
-                <button onClick={this.onDeleteHandle.bind(this, item.id)}>
-                  Delete
-                </button>
-                <button
-                  onClick={this.onEditHandle.bind(this, item.id, item.username, item.english, item.sst, item.science, item.math, item.avg, item.date)}
-                >
-                  Edit
-                </button>
-                <button onClick={this.onCompleteHandle.bind(this, item.id)}>
-                  Complete
-                </button>
-              </td> 
-            </tr>
-          ))}
+                <td>{item.date}</td>
+                <td>
+                  <button onClick={this.onDeleteHandle.bind(this, item.id)}>
+                    Delete
+                  </button>
+                  <button
+                    onClick={this.onEditHandle.bind(
+                      this,
+                      item.id,
+                      item.username,
+                      item.english,
+                      item.sst,
+                      item.science,
+                      item.math,
+                      item.avg,
+                      item.date
+                    )}
+                  >
+                    Edit
+                  </button>
+                  <button onClick={this.onCompleteHandle.bind(this, item.id)}>
+                    Complete
+                  </button>
+                </td>
+              </tr>
+            ))) :
+                  (<tr>
+                    <td colSpan={7}>No studentsResults</td>
+                  </tr>))}
           </tbody>
         </table>
       </div>
